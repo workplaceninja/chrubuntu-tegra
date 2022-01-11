@@ -128,12 +128,12 @@ chromebook_arch="`uname -m`"
 
 ubuntu_metapackage=${1:-default}
 
-latest_ubuntu=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+latest_ubuntu=`curl http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
 ubuntu_version=${2:-$latest_ubuntu}
 
 if [ "$ubuntu_version" = "lts" ]
 then
-  ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version:" | grep "LTS" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+  ubuntu_version=`curl http://changelogs.ubuntu.com/meta-release | grep "^Version:" | grep "LTS" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
 elif [ "$ubuntu_version" = "latest" ]
 then
   ubuntu_version=$latest_ubuntu
@@ -207,12 +207,12 @@ fi
 mount -t ext4 ${target_rootfs} /tmp/urfs
 
 tar_file="http://cdimage.ubuntu.com/ubuntu-base/releases/$ubuntu_version/release/ubuntu-base-$ubuntu_version-base-$ubuntu_arch.tar.gz"
-if [ $ubuntu_version = "dev" ]
+if [ "$ubuntu_version" = "dev" ]
 then
-  ubuntu_animal=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Dist: " | tail -1 | sed -r 's/^Dist: (.*)$/\1/'`
+  ubuntu_animal=`curl http://changelogs.ubuntu.com/meta-release-development | grep "^Dist: " | tail -1 | sed -r 's/^Dist: (.*)$/\1/'`
   tar_file="http://cdimage.ubuntu.com/ubuntu-core/daily/current/$ubuntu_animal-core-$ubuntu_arch.tar.gz"
 fi
-wget -O - $tar_file | tar xzvvp -C /tmp/urfs/
+curl $tar_file | tar xzvvp -C /tmp/urfs/
 
 mount -o bind /proc /tmp/urfs/proc
 mount -o bind /dev /tmp/urfs/dev
@@ -243,11 +243,11 @@ echo -e "\n127.0.1.1       chrubuntu" >> /tmp/urfs/etc/hosts
 #ff02::1 ip6-allnodes
 #ff02::2 ip6-allrouters" > /tmp/urfs/etc/hosts
 
-cr_install="wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+cr_install="curl https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 add-apt-repository \"deb http://dl.google.com/linux/chrome/deb/ stable main\"
 apt-get update
 apt-get -y install google-chrome-stable"
-if [ $ubuntu_arch = 'armhf' ]
+if [ "$ubuntu_arch" = 'armhf' ]
 then
   cr_install='apt-get -y install chromium-browser'
 fi
@@ -382,7 +382,7 @@ EOF
 # BIG specific files here
 l4tdir=`mktemp -d`
 l4t=Tegra124_Linux_R21.1.0_armhf.tbz2
-wget -P ${l4tdir} http://developer.download.nvidia.com/mobile/tegra/l4t/r21.1.0/${l4t}
+curl http://developer.download.nvidia.com/mobile/tegra/l4t/r21.1.0/${l4t} > ${l4tdir}
 cd ${l4tdir}
 tar xvpf ${l4t}
 cd Linux_for_Tegra/rootfs/
@@ -2130,7 +2130,7 @@ rm /tmp/urfs/install-tegra.sh
 
 echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0" > kernel-config
 vbutil_arch="x86"
-if [ $ubuntu_arch = "armhf" ]
+if [ "$ubuntu_arch" = "armhf" ]
 then
   vbutil_arch="arm"
 fi
