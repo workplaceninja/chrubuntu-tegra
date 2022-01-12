@@ -382,7 +382,7 @@ EOF
 # BIG specific files here
 l4tdir=`mktemp -d`
 l4t=Tegra124_Linux_R21.1.0_armhf.tbz2
-curl http://developer.download.nvidia.com/mobile/tegra/l4t/r21.1.0/${l4t} > ${l4tdir}
+curl http://developer.download.nvidia.com/mobile/tegra/l4t/r21.1.0/${l4t} > ${l4tdir}/${l4t}
 cd ${l4tdir}
 tar xvpf ${l4t}
 cd Linux_for_Tegra/rootfs/
