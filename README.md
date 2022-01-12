@@ -1,8 +1,8 @@
-Scripts to install chrubuntu for tegra chromebook such as Acer Chromebook 13
+Scripts to install chrubuntu for tegra chromebook, specifically HP Chromebook 14 G3
 
 Based on work of arm000 found [here](http://www.reddit.com/r/chrubuntu/comments/2hhb31/chrubuntu_on_acer_chromebook_13/)
 
-Updated for latest ChromeOS on the Acer (parted and partprobe are no longer installed by default).  Also added workaround for missing whoopsie init script.  Use the script arguments to specify "flavor" "version" and device to install to an external medium such as SDCard (note the device is the third argument).
+Updated for latest ChromeOS on the Acer (parted and partprobe are no longer installed by default).  Also added workaround for missing whoopsie init script.  Use the script arguments to specify "flavor", "version" and device to install to an external medium such as SDCard (note the device is the third argument).
 
 You can find some info on the chrubuntu script arguments [here](http://chromeos-cr48.blogspot.com/2013/05/chrubuntu-one-script-to-rule-them-all_31.html)
 
@@ -10,8 +10,8 @@ Note: if your chromebook has had time to update itself, you probably won't have 
 
 What works:
 
-                    "flavor"             "version"     "device"
-                    default              latest        /dev/mmcblk1
+                    "flavor"             "version"      "device"
+                    default              16.04.6        /dev/mmcblk1
 
 What doesn't work:
 
